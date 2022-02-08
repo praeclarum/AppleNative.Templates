@@ -16,9 +16,11 @@ type MainSceneDelegate () =
 
     let mutable loadedExamples = false
 
+//-:cnd:noEmit
 #if __MACCATALYST__
     let toolbarDelegate = new MainToolbarDelegate ()
 #endif
+//+:cnd:noEmit
 
     override val Window = null with get, set
 
@@ -46,6 +48,7 @@ type MainSceneDelegate () =
             split.SetViewController(icn, UISplitViewControllerColumn.Primary)
             split.SetViewController(vcn, UISplitViewControllerColumn.Secondary)
 
+//-:cnd:noEmit
 #if __MACCATALYST__
             icn.NavigationBarHidden <- true
             vcn.NavigationBarHidden <- true
@@ -60,6 +63,7 @@ type MainSceneDelegate () =
                 titlebar.Toolbar <- toolbar
                 titlebar.ToolbarStyle <- UITitlebarToolbarStyle.Automatic
 #endif
+//+:cnd:noEmit
 
             let win = new UIWindow (scene.CoordinateSpace.Bounds)
             
@@ -74,7 +78,7 @@ type MainSceneDelegate () =
             |> Async.StartImmediate
         | _ -> ()
 
-
+//-:cnd:noEmit
 #if __MACCATALYST__
 
 and MainToolbarDelegate () =
@@ -127,3 +131,4 @@ and MainToolbarDelegate () =
             null
 
 #endif
+//+:cnd:noEmit
