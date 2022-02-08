@@ -3,7 +3,7 @@
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageVersion>1.0</PackageVersion>
-    <PackageId>Praeclarum.AppleNative.Templates</PackageId>
+    <PackageId>AppleNative.Templates</PackageId>
     <Title>Praeclarum's Apple Native UI Templates</Title>
     <Authors>praeclarum</Authors>
     <Description>Templates to use when creating an Apple application.</Description>

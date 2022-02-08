@@ -3,8 +3,8 @@
     "author": "Frank A. Krueger",
     "classifications": [ "Console" ], 
     "name": "iOS and macOS App",
-    "identity": "Praeclarum.AppleNative.FSharp",
-    "groupIdentity":"Praeclarum.AppleNative",
+    "identity": "AppleNative.FSharp",
+    "groupIdentity":"AppleNative",
     "shortName": "applenative",
     "tags": {
       "language": "F#",
