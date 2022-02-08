@@ -2,17 +2,18 @@ CONFIGURATION=Debug
 
 all: app testapp
 	
-app: MacCatApp/bin/$(CONFIGURATION)/net6.0-maccatalyst/maccatalyst-x64/MacCatApp.app/Contents/MacOS/MacCatApp
-
-MacCatApp/bin/$(CONFIGURATION)/net6.0-maccatalyst/maccatalyst-x64/MacCatApp.app/Contents/MacOS/MacCatApp:
+app:
 	dotnet build -c $(CONFIGURATION) MacCatApp/MacCatApp.fsproj
 
-Tests/bin/$(CONFIGURATION)/net6.0-maccatalyst/maccatalyst-x64/Tests.app/Contents/MacOS/Tests:
+testapp:
 	dotnet build -c $(CONFIGURATION) Tests/Tests.fsproj
 
-testapp: Tests/bin/$(CONFIGURATION)/net6.0-maccatalyst/maccatalyst-x64/Tests.app/Contents/MacOS/Tests
+run:
+	dotnet build -c $(CONFIGURATION) MacCatApp/MacCatApp.fsproj
+	MacCatApp/bin/$(CONFIGURATION)/net6.0-maccatalyst/maccatalyst-x64/MacCatApp.app/Contents/MacOS/MacCatApp
 
-test: testapp
+test:
+	dotnet build -c $(CONFIGURATION) Tests/Tests.fsproj
 	Tests/bin/$(CONFIGURATION)/net6.0-maccatalyst/maccatalyst-x64/Tests.app/Contents/MacOS/Tests
 
 clean:

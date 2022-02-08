@@ -7,9 +7,8 @@ open Foundation
 open ObjCRuntime
 
 [<Register ("MainSceneDelegate")>]
-type ProjectSceneDelegate () =
+type MainSceneDelegate () =
     inherit UIWindowSceneDelegate ()
-
 
     let mutable detailViewController : DetailViewController option = None
     let mutable sidebarViewController : SidebarViewController option = None
@@ -18,7 +17,7 @@ type ProjectSceneDelegate () =
     let mutable loadedExamples = false
 
 #if __MACCATALYST__
-    let toolbarDelegate = new ProjectToolbarDelegate ()
+    let toolbarDelegate = new MainToolbarDelegate ()
 #endif
 
     override val Window = null with get, set
@@ -78,7 +77,7 @@ type ProjectSceneDelegate () =
 
 #if __MACCATALYST__
 
-and ProjectToolbarDelegate () =
+and MainToolbarDelegate () =
     inherit AppKit.NSToolbarDelegate ()
 
     let defaultItems =

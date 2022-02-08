@@ -8,3 +8,7 @@ open ObjCRuntime
 
 type DetailViewController () =
     inherit UIViewController()
+
+    override this.ViewDidLoad () =
+        base.ViewDidLoad ()
+        this.View.BackgroundColor <- UIColor.SystemBackgroundColor
