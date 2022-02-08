@@ -59,8 +59,8 @@ jobs:
     - name: Import Certificate
       uses: apple-actions/import-codesign-certs@v1
       with: 
-        p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
-        p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+        p12-file-base64: ${{ secrets.APPLE_CERTIFICATE_P12 }}
+        p12-password: ${{ secrets.APPLE_CERTIFICATE_P12_PASSWORD }}
     - name: Download Provisioning Profile
       id: provisioning
       uses: apple-actions/download-provisioning-profiles@v1
@@ -111,14 +111,14 @@ jobs:
       uses: apple-actions/import-codesign-certs@v1
       with:
         create-keychain: true
-        keychain-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
-        p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
-        p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+        keychain-password: ${{ secrets.APPLE_CERTIFICATE_P12_PASSWORD }}
+        p12-file-base64: ${{ secrets.APPLE_CERTIFICATE_P12 }}
+        p12-password: ${{ secrets.APPLE_CERTIFICATE_P12_PASSWORD }}
     - name: Import Installer Certificate
       uses: apple-actions/import-codesign-certs@v1
       with:
         create-keychain: false
-        keychain-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+        keychain-password: ${{ secrets.APPLE_CERTIFICATE_P12_PASSWORD }}
         p12-file-base64: ${{ secrets.INSTALLER_CERTIFICATE_P12 }}
         p12-password: ${{ secrets.INSTALLER_CERTIFICATE_P12_PASSWORD }}
     - name: Download Provisioning Profile
