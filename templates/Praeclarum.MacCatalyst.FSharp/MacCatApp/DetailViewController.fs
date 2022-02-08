@@ -1,4 +1,4 @@
-namespace Application
+namespace MacCatApp
 
 open System
 open System.Threading.Tasks

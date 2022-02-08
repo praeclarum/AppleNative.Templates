@@ -2,7 +2,7 @@
 
 open NUnit.Framework
 
-open Application
+open MacCatApp
 
 [<SetUp>]
 let Setup () =

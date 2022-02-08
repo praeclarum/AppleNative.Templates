@@ -85,14 +85,14 @@ jobs:
 
     - name: Build iOS
       run: |
-        sed -E -i .bak "s:<TargetFrameworks>[^<]+</TargetFrameworks>:<TargetFrameworks>net6.0-ios</TargetFrameworks>:g" Application/Application.fsproj
-        dotnet build -c Release -f net6.0-ios "/p:BuildIpa=true" "/p:CodesignKey=Apple Distribution" "/p:CodesignProvision=Mesh Caster iOS Distribution" Application/Application.fsproj
+        sed -E -i .bak "s:<TargetFrameworks>[^<]+</TargetFrameworks>:<TargetFrameworks>net6.0-ios</TargetFrameworks>:g" MacCatApp/MacCatApp.fsproj
+        dotnet build -c Release -f net6.0-ios "/p:BuildIpa=true" "/p:CodesignKey=Apple Distribution" "/p:CodesignProvision=Mesh Caster iOS Distribution" MacCatApp/MacCatApp.fsproj
 
     - name: Upload to TestFlight
       uses: apple-actions/upload-testflight-build@v1
       with:
         app-type: ios
-        app-path: 'Application/bin/Release/net6.0-ios/ios-arm64/Application.ipa'
+        app-path: 'MacCatApp/bin/Release/net6.0-ios/ios-arm64/MacCatApp.ipa'
         issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
         api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
         api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
@@ -142,7 +142,7 @@ jobs:
       with:
         dotnet-version: 6.0.101
     - name: Install iOS and Mac Catalyst Support
-      run: dotnet workload install ios Application
+      run: dotnet workload install ios MacCatApp
 
     - name: Restore Dependencies
       run: dotnet restore
@@ -150,17 +150,17 @@ jobs:
       run: cd FbxSharp && make CONFIG=Release
 
     - name: Remove iPhone from Info.plist
-      run: /usr/libexec/PlistBuddy -x -c "Delete :UIDeviceFamily:0" Application/Info.plist
+      run: /usr/libexec/PlistBuddy -x -c "Delete :UIDeviceFamily:0" MacCatApp/Info.plist
     - name: Build Mac Catalyst
       run: |
-        sed -E -i .bak "s:<TargetFrameworks>[^<]+</TargetFrameworks>:<TargetFrameworks>net6.0-maccatalyst</TargetFrameworks>:g" Application/Application.fsproj
-        dotnet build -c Release -f net6.0-maccatalyst "/p:CreatePackage=true" "/p:EnablePackageSigning=true" "/p:EnableCodeSigning=true" "/p:CodeSignEntitlements=Entitlements.plist" "/p:CodesignKey=Apple Distribution" "/p:CodesignProvision=Mesh Caster Mac Distribution" Application/Application.fsproj
+        sed -E -i .bak "s:<TargetFrameworks>[^<]+</TargetFrameworks>:<TargetFrameworks>net6.0-maccatalyst</TargetFrameworks>:g" MacCatApp/MacCatApp.fsproj
+        dotnet build -c Release -f net6.0-maccatalyst "/p:CreatePackage=true" "/p:EnablePackageSigning=true" "/p:EnableCodeSigning=true" "/p:CodeSignEntitlements=Entitlements.plist" "/p:CodesignKey=Apple Distribution" "/p:CodesignProvision=Mesh Caster Mac Distribution" MacCatApp/MacCatApp.fsproj
 
     - name: Upload to TestFlight
       uses: apple-actions/upload-testflight-build@v1
       with:
         app-type: macos
-        app-path: 'Application/bin/Release/net6.0-maccatalyst/maccatalyst-x64/Application-1.0.pkg'
+        app-path: 'MacCatApp/bin/Release/net6.0-maccatalyst/maccatalyst-x64/MacCatApp-1.0.pkg'
         issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
         api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
         api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}

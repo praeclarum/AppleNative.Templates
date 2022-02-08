@@ -1,4 +1,4 @@
-﻿module Application.Program
+﻿module MacCatApp.Program
 
 open UIKit
 

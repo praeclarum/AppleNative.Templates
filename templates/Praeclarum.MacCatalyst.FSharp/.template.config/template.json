@@ -10,6 +10,6 @@
       "language": "F#",
       "type":"project"
     },
-    "sourceName": "Application",
+    "sourceName": "MacCatApp",
     "preferNameDirectory": true
 }

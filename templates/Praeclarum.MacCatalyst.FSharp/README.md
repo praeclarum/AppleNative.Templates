@@ -1,4 +1,4 @@
-# Application
+# MacCatApp
 
 * SKU: 
 * Apple ID: (appleid)

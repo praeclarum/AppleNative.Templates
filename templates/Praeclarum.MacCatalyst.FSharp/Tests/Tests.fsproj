@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\Application\Info.plist">
+    <None Include="..\MacCatApp\Info.plist">
       <Link>Info.plist</Link>
     </None>
-    <Compile Include="..\Application\AppCommands.fs">
+    <Compile Include="..\MacCatApp\AppCommands.fs">
       <Link>AppCommands.fs</Link>
     </Compile>
     <Compile Include="ExampleTests.fs" />
