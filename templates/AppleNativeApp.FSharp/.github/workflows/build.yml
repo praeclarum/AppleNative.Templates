@@ -80,13 +80,9 @@ jobs:
 
     - name: Restore Dependencies
       run: dotnet restore
-    - name: Build FbxSharp
-      run: cd FbxSharp && make CONFIG=Release
 
     - name: Build iOS
-      run: |
-        sed -E -i .bak "s:<TargetFrameworks>[^<]+</TargetFrameworks>:<TargetFrameworks>net6.0-ios</TargetFrameworks>:g" AppleNativeApp/AppleNativeApp.fsproj
-        dotnet build -c Release -f net6.0-ios "/p:BuildIpa=true" "/p:CodesignKey=Apple Distribution" "/p:CodesignProvision=Mesh Caster iOS Distribution" AppleNativeApp/AppleNativeApp.fsproj
+      run: make iosdist
 
     - name: Upload to TestFlight
       uses: apple-actions/upload-testflight-build@v1
@@ -146,15 +142,9 @@ jobs:
 
     - name: Restore Dependencies
       run: dotnet restore
-    - name: Build FbxSharp
-      run: cd FbxSharp && make CONFIG=Release
 
-    - name: Remove iPhone from Info.plist
-      run: /usr/libexec/PlistBuddy -x -c "Delete :UIDeviceFamily:0" AppleNativeApp/Info.plist
-    - name: Build Mac Catalyst
-      run: |
-        sed -E -i .bak "s:<TargetFrameworks>[^<]+</TargetFrameworks>:<TargetFrameworks>net6.0-maccatalyst</TargetFrameworks>:g" AppleNativeApp/AppleNativeApp.fsproj
-        dotnet build -c Release -f net6.0-maccatalyst "/p:CreatePackage=true" "/p:EnablePackageSigning=true" "/p:EnableCodeSigning=true" "/p:CodeSignEntitlements=Entitlements.plist" "/p:CodesignKey=Apple Distribution" "/p:CodesignProvision=Mesh Caster Mac Distribution" AppleNativeApp/AppleNativeApp.fsproj
+    - name: Build
+      run: make macdist
 
     - name: Upload to TestFlight
       uses: apple-actions/upload-testflight-build@v1
