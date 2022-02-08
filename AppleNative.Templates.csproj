@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>1.0</PackageVersion>
+    <PackageVersion>1.1</PackageVersion>
     <PackageId>AppleNative.Templates</PackageId>
     <Title>Praeclarum's Apple Native UI Templates</Title>
     <Authors>praeclarum</Authors>
     <Description>Templates to use when creating an Apple application.</Description>
     <PackageTags>dotnet-new;templates;apple;ios;mac;macos;osx;catalyst;native</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     <TargetFramework>netstandard2.0</TargetFramework>
 
