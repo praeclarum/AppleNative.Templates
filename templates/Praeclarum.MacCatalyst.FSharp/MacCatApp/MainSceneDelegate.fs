@@ -30,7 +30,7 @@ type ProjectSceneDelegate () =
         for a in activities do
             printfn "ACT: %A" a.ActivityType
             match a.ActivityType with
-            | "com.example.app.open" ->
+            | "com.example.MacCatApp.open" ->
                 tasks.Add(OpenActivity)
             | s ->
                 printfn "UNKNOWN ACT: %s:" s
@@ -53,7 +53,7 @@ type ProjectSceneDelegate () =
             let toolbar = new AppKit.NSToolbar(identifier = "main")
             toolbar.Delegate <- toolbarDelegate
             toolbar.DisplayMode <- AppKit.NSToolbarDisplayMode.Icon
-            toolbar.CenteredItemIdentifier <- "com.example.app.segments"
+            toolbar.CenteredItemIdentifier <- "com.example.MacCatApp.segments"
             toolbar.AllowsUserCustomization <- true
             match scene.Titlebar with
             | null -> ()
@@ -84,11 +84,11 @@ and ProjectToolbarDelegate () =
     let defaultItems =
         [|
             string AppKit.NSToolbar.NSToolbarToggleSidebarItemIdentifier
-            "com.example.app.segments"
+            "com.example.MacCatApp.segments"
             string AppKit.NSToolbar.NSToolbarFlexibleSpaceItemIdentifier
-            "com.example.app.open"
+            "com.example.MacCatApp.open"
             string AppKit.NSToolbar.NSToolbarSpaceItemIdentifier
-            "com.example.app.menu"
+            "com.example.MacCatApp.menu"
         |]
 
     override this.DefaultItemIdentifiers (toolbar) =
@@ -101,18 +101,18 @@ and ProjectToolbarDelegate () =
 
     override this.WillInsertItem (toolbar, itemIdentifier, willBeInserted) =
         match itemIdentifier with
-        | "com.example.app.segments" ->
+        | "com.example.MacCatApp.segments" ->
             let item = AppKit.NSToolbarItemGroup.Create(itemIdentifier, [|"X"; "Y";"Z"|], AppKit.NSToolbarItemGroupSelectionMode.SelectOne, [|"X";"Y"; "Z"|], null, new Selector("setAxis:"))
             item.SelectedIndex <- 0
             item.ToolTip <- "Choose one."
             upcast item
-        | "com.example.app.open" ->
+        | "com.example.MacCatApp.open" ->
             let item = new AppKit.NSToolbarItem(itemIdentifier, Label = "Open");
             item.Image <- AppKit.NSImage.GetSystemSymbol("cube", "Open")
             item.ToolTip <- "Open"
             item.Action <- new Selector(AppCommands.openDocumentSel)
             item
-        | "com.example.app.menu" ->
+        | "com.example.MacCatApp.menu" ->
             let item = new AppKit.NSMenuToolbarItem ()
             let ident = new NSString (itemIdentifier)
             let res = item.PerformSelector(new ObjCRuntime.Selector("initWithItemIdentifier:"), ident)
