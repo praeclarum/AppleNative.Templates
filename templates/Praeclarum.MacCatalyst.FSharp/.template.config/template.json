@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Frank A. Krueger",
+    "classifications": [ "Console" ], 
+    "name": "iOS and macOS App",
+    "identity": "Praeclarum.MacCatalyst.FSharp",
+    "groupIdentity":"Praeclarum.MacCatalyst",
+    "shortName": "pmaccat",
+    "tags": {
+      "language": "F#",
+      "type":"project"
+    },
+    "sourceName": "Application",
+    "preferNameDirectory": true
+}

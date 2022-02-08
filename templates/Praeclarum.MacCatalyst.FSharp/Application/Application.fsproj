@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <TargetFrameworks>net6.0-maccatalyst</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <EnableAssemblyILStripping>false</EnableAssemblyILStripping>
+  </PropertyGroup>
+
+  <!-- platform version number information -->
+  <PropertyGroup Condition="$(TargetFramework.Contains('-ios'))">
+    <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+    <SupportedOSPlatformVersion>10.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-tvos'))">
+    <SupportedOSPlatformVersion>10.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst'))">
+    <RuntimeIdentifier>maccatalyst-x64</RuntimeIdentifier>
+    <SupportedOSPlatformVersion>13.1</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-macos'))">
+    <SupportedOSPlatformVersion>10.14</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
+    <SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-windows10'))">
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <BundleResource Include="Resources\Credits.rtf" />
+    <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
+    <Compile Include="AppCommands.fs" />
+    <Compile Include="SidebarViewController.fs" />
+    <Compile Include="DetailViewController.fs" />
+    <Compile Include="MainViewController.fs" />
+    <Compile Include="MainSceneDelegate.fs" />
+    <Compile Include="AppDelegate.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+</Project>

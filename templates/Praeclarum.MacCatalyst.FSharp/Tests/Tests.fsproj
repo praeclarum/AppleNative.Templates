@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-maccatalyst</TargetFramework>
+    <RuntimeIdentifier>maccatalyst-x64</RuntimeIdentifier>
+    <OutputType>Exe</OutputType>
+    <SupportedOSPlatformVersion>14.2</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Application\Info.plist">
+      <Link>Info.plist</Link>
+    </None>
+    <Compile Include="..\Application\AppCommands.fs">
+      <Link>AppCommands.fs</Link>
+    </Compile>
+    <Compile Include="ExampleTests.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.13.2" />
+  </ItemGroup>
+
+</Project>

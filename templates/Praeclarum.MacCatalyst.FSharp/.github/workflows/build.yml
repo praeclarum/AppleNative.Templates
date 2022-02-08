@@ -1,0 +1,166 @@
+name: Build and Test
+
+on:
+  pull_request:
+  push:
+    branches:
+    - main
+  schedule:
+  - cron: '15 33 * * *'
+
+jobs:
+  check_deploy:
+    runs-on: ubuntu-latest
+    name: Check if Nightly Deployment
+    outputs:
+      should_deploy: ${{ github.event_name == 'schedule' && github.ref == 'refs/heads/main' && fromJSON(steps.get_num_commits.outputs.num_commits) > 0 }}
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: main
+    - id: get_num_commits
+      name: Get the number of commits in the last 24h
+      run: echo "::set-output name=num_commits::$(git rev-list --max-count=1 --after='24 hours' HEAD | wc -l)"
+    - name: Show num commits
+      run: echo ${{ fromJSON(steps.get_num_commits.outputs.num_commits) }}
+
+  test:
+    name: Build and Test
+    if: github.event_name != 'schedule'
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update Version
+      run: bash version.sh ${{github.run_number}}
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.101
+    - name: Install iOS and Mac Catalyst Support
+      run: dotnet workload install ios maccatalyst
+
+    - name: Restore Dependencies
+      run: dotnet restore
+
+    - name: Build and Run Tests
+      run: make CONFIGURATION=Release test
+
+  deployios:
+    name: iOS Build and Deploy
+    needs: check_deploy
+    if: ${{ needs.check_deploy.outputs.should_deploy != 'false' }}
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update Version
+      run: bash version.sh ${{github.run_number}}
+
+    - name: Import Certificate
+      uses: apple-actions/import-codesign-certs@v1
+      with: 
+        p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+        p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+    - name: Download Provisioning Profile
+      id: provisioning
+      uses: apple-actions/download-provisioning-profiles@v1
+      with: 
+        bundle-id: 'com.example.app'
+        profile-type: 'IOS_APP_STORE'
+        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.101
+    - name: Install iOS and Mac Catalyst Support
+      run: dotnet workload install ios maccatalyst
+
+    - name: Restore Dependencies
+      run: dotnet restore
+    - name: Build FbxSharp
+      run: cd FbxSharp && make CONFIG=Release
+
+    - name: Build iOS
+      run: |
+        sed -E -i .bak "s:<TargetFrameworks>[^<]+</TargetFrameworks>:<TargetFrameworks>net6.0-ios</TargetFrameworks>:g" Application/Application.fsproj
+        dotnet build -c Release -f net6.0-ios "/p:BuildIpa=true" "/p:CodesignKey=Apple Distribution" "/p:CodesignProvision=Mesh Caster iOS Distribution" Application/Application.fsproj
+
+    - name: Upload to TestFlight
+      uses: apple-actions/upload-testflight-build@v1
+      with:
+        app-type: ios
+        app-path: 'Application/bin/Release/net6.0-ios/ios-arm64/Application.ipa'
+        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+
+  deploymac:
+    name: macOS Build and Deploy
+    needs: check_deploy
+    if: ${{ needs.check_deploy.outputs.should_deploy != 'false' }}
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update Version
+      run: bash version.sh ${{github.run_number}}
+
+    - name: Import Certificate
+      uses: apple-actions/import-codesign-certs@v1
+      with:
+        create-keychain: true
+        keychain-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+        p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+        p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+    - name: Import Installer Certificate
+      uses: apple-actions/import-codesign-certs@v1
+      with:
+        create-keychain: false
+        keychain-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+        p12-file-base64: ${{ secrets.INSTALLER_CERTIFICATE_P12 }}
+        p12-password: ${{ secrets.INSTALLER_CERTIFICATE_P12_PASSWORD }}
+    - name: Download Provisioning Profile
+      id: provisioning
+      uses: apple-actions/download-provisioning-profiles@v1
+      with:
+        bundle-id: 'com.example.app'
+        profile-type: 'MAC_APP_STORE'
+        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+    - name: Fix Provisioning Profile Extension
+      shell: bash
+      run: |
+        for f in $HOME/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision; do 
+          mv -- "$f" "${f%.mobileprovision}.provisionprofile"
+        done
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.101
+    - name: Install iOS and Mac Catalyst Support
+      run: dotnet workload install ios Application
+
+    - name: Restore Dependencies
+      run: dotnet restore
+    - name: Build FbxSharp
+      run: cd FbxSharp && make CONFIG=Release
+
+    - name: Remove iPhone from Info.plist
+      run: /usr/libexec/PlistBuddy -x -c "Delete :UIDeviceFamily:0" Application/Info.plist
+    - name: Build Mac Catalyst
+      run: |
+        sed -E -i .bak "s:<TargetFrameworks>[^<]+</TargetFrameworks>:<TargetFrameworks>net6.0-maccatalyst</TargetFrameworks>:g" Application/Application.fsproj
+        dotnet build -c Release -f net6.0-maccatalyst "/p:CreatePackage=true" "/p:EnablePackageSigning=true" "/p:EnableCodeSigning=true" "/p:CodeSignEntitlements=Entitlements.plist" "/p:CodesignKey=Apple Distribution" "/p:CodesignProvision=Mesh Caster Mac Distribution" Application/Application.fsproj
+
+    - name: Upload to TestFlight
+      uses: apple-actions/upload-testflight-build@v1
+      with:
+        app-type: macos
+        app-path: 'Application/bin/Release/net6.0-maccatalyst/maccatalyst-x64/Application-1.0.pkg'
+        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
