@@ -16,6 +16,6 @@ fi
 VERSION=$VERSION_MAJOR_MINOR.$VERSION_PATCH
 
 # Update the version in the source files
-sed -E -i .bak "s:<Version>[0-9]+\\.[0-9]+\\.[0-9]+</Version>:<Version>$VERSION</Version>:g" MacCatApp/MacCatApp.fsproj
-/usr/libexec/PlistBuddy -x -c "Set CFBundleShortVersionString $VERSION_MAJOR_MINOR" MacCatApp/Info.plist
-/usr/libexec/PlistBuddy -x -c "Set CFBundleVersion $VERSION" MacCatApp/Info.plist
+sed -E -i .bak "s:<Version>[0-9]+\\.[0-9]+\\.[0-9]+</Version>:<Version>$VERSION</Version>:g" AppleNativeApp/AppleNativeApp.fsproj
+/usr/libexec/PlistBuddy -x -c "Set CFBundleShortVersionString $VERSION_MAJOR_MINOR" AppleNativeApp/Info.plist
+/usr/libexec/PlistBuddy -x -c "Set CFBundleVersion $VERSION" AppleNativeApp/Info.plist

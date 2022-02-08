@@ -1,4 +1,4 @@
-namespace MacCatApp
+namespace AppleNativeApp
 
 open Foundation
 open ObjCRuntime
@@ -39,7 +39,7 @@ type AppDelegate() =
 
     [<Export("open:")>]
     member this.Open(sender : NSObject) : unit =
-        let activity = new NSUserActivity ("com.example.MacCatApp.open")
+        let activity = new NSUserActivity ("com.example.AppleNativeApp.open")
         let options = new UISceneActivationRequestOptions()
         UIApplication.SharedApplication.RequestSceneSessionActivation(null, activity, options, fun err ->
             ())

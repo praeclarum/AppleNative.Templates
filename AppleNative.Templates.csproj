@@ -3,8 +3,8 @@
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageVersion>1.0</PackageVersion>
-    <PackageId>Praeclarum.MacCatalyst.Templates</PackageId>
-    <Title>Praeclarum's MacCatalyst Templates</Title>
+    <PackageId>Praeclarum.AppleNative.Templates</PackageId>
+    <Title>Praeclarum's Apple Native UI Templates</Title>
     <Authors>praeclarum</Authors>
     <Description>Templates to use when creating an Apple application.</Description>
     <PackageTags>dotnet-new;templates;apple;ios;mac;macos;osx;catalyst;native</PackageTags>

@@ -6,9 +6,9 @@
 	<array>
 	</array>
 	<key>CFBundleDisplayName</key>
-	<string>MacCatApp</string>
+	<string>AppleNativeApp</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.example.MacCatApp</string>
+	<string>com.example.AppleNativeApp</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>

@@ -1,4 +1,4 @@
-# MacCatApp
+# AppleNativeApp
 
 * SKU: 
 * Apple ID: (appleid)

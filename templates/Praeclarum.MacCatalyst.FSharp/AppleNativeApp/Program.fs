@@ -1,4 +1,4 @@
-﻿module MacCatApp.Program
+﻿module AppleNativeApp.Program
 
 open UIKit
 

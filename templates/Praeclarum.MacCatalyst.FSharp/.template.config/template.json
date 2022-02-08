@@ -3,13 +3,13 @@
     "author": "Frank A. Krueger",
     "classifications": [ "Console" ], 
     "name": "iOS and macOS App",
-    "identity": "Praeclarum.MacCatalyst.FSharp",
-    "groupIdentity":"Praeclarum.MacCatalyst",
-    "shortName": "pmaccat",
+    "identity": "Praeclarum.AppleNative.FSharp",
+    "groupIdentity":"Praeclarum.AppleNative",
+    "shortName": "applenative",
     "tags": {
       "language": "F#",
       "type":"project"
     },
-    "sourceName": "MacCatApp",
+    "sourceName": "AppleNativeApp",
     "preferNameDirectory": true
 }

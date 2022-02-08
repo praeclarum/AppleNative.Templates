@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MacCatApp", "MacCatApp\MacCatApp.fsproj", "{BC48B23E-6B22-4DFB-A0F7-617D7447351C}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AppleNativeApp", "AppleNativeApp\AppleNativeApp.fsproj", "{BC48B23E-6B22-4DFB-A0F7-617D7447351C}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Tests", "Tests\Tests.fsproj", "{98FB46DD-D4DA-4711-B915-ED433BB04922}"
 EndProject

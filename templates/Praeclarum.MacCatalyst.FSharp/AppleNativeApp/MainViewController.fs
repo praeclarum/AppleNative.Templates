@@ -1,4 +1,4 @@
-﻿namespace MacCatApp
+﻿namespace AppleNativeApp
 
 open System
 open System.Threading.Tasks
